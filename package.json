@@ -1,6 +1,6 @@
 {
   "name": "portmore",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A portless process wrapper that assigns and aliases free ports for local in process service orchestration.",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "npm run build && portless run --name demo node dist/demo.js",
+    "dev": "npm run build && npx portless run --name demo node dist/demo.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "clean": "rm -rf dist",
@@ -44,6 +44,7 @@
     "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^10.0.3",
     "globals": "^17.4.0",
+    "portless": "^0.13.0",
     "typescript": "^5.9.3"
   },
   "engines": {

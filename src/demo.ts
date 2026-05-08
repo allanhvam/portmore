@@ -3,6 +3,9 @@ import {
   type IncomingMessage,
   type ServerResponse,
 } from "node:http";
+import { readFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
+import { join } from "node:path";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { portmore } from "./index.js";
@@ -112,6 +115,27 @@ server.listen(port);
 
 console.log(`Demo running on port: ` + port);
 
+const proxyPort = (() => {
+  const candidates = [
+    join(homedir(), ".portless", "proxy.port"),
+    "/tmp/portless/proxy.port",
+    join(tmpdir(), "portless", "proxy.port"),
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      const value = readFileSync(candidate, "utf8").trim();
+      if (value) {
+        return value;
+      }
+    } catch {
+      // Continue to the next candidate path.
+    }
+  }
+
+  return "1355";
+})();
+
 if (process.env.PORTLESS_URL) {
-  openInBrowser("http://portmore.localhost:1355");
+  openInBrowser(`http://portmore.localhost:${proxyPort}`);
 }
